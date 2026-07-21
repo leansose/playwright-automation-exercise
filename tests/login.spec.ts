@@ -7,14 +7,10 @@ test('login with valid credentials', async ({ page }) => {
   const homePage = new HomePage(page);
   const loginPage = new LoginPage(page);
 
-  // Open and verify that home page is visible successfully and Consent button is clicked
   await homePage.open();
-  // Click on 'Signup / Login' button
-  await loginPage.clickSignupLoginButton();
-  // Enter correct email address and password and click 'Login' button
+  await homePage.clickSignupLoginButton();
   await loginPage.login('giuzesouza@gmail.com', 'qwert12345');
-  // Verify that 'Logged in as username' is visible
-  await loginPage.verifyLoggedInVisible();
+  await homePage.verifyUserLoggedIn();
 
 });
 
@@ -23,44 +19,64 @@ test('login with invalid credentials', async ({ page }) => {
   const homePage = new HomePage(page);
   const loginPage = new LoginPage(page);
 
-  // Open and verify that home page is visible successfully and Consent button is clicked
   await homePage.open();
-  // Click on 'Signup / Login' button
-  await loginPage.clickSignupLoginButton();
-  // Enter incorrect email address and password and click 'Login' button
+  await homePage.clickSignupLoginButton();
   await loginPage.login('invalid@gmail.com', 'invalid123');
-  // Verify error 'Your email or password is incorrect!' is visible
   await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
 
 });
 
-test('login with empty credentials', async ({ page }) => {
+test('login with valid email and invalid password', async ({ page }) => {
 
   const homePage = new HomePage(page);
   const loginPage = new LoginPage(page);
 
-  // Open and verify that home page is visible successfully and Consent button is clicked
   await homePage.open();
-  // Click on 'Signup / Login' button
-  await loginPage.clickSignupLoginButton();
-  // Click 'Login' button without entering email and password
-  await page.locator('[data-qa="login-button"]').click();
-  // Verify error 'Please enter your email or password!' is visible
-  await expect(page.getByText('Please enter your email or password!')).toBeVisible();
+  await homePage.clickSignupLoginButton();
+  await loginPage.login('giuzesouza@gmail.com', 'invalid123');
+  await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
+
+});
+
+test('login with invalid email and valid password', async ({ page }) => {
+
+  const homePage = new HomePage(page);
+  const loginPage = new LoginPage(page);
+
+  await homePage.open();
+  await homePage.clickSignupLoginButton();
+  await loginPage.login('invalid@gmail.com', 'qwert12345');
+  await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
 
 });
 
 test('logout user', async ({ page }) => {
+
   const homePage = new HomePage(page);
   const loginPage = new LoginPage(page);
-  // Open and verify that home page is visible successfully and Consent button is clicked
+
   await homePage.open();
-  // Click on 'Signup / Login' button
-  await loginPage.clickSignupLoginButton();
-  // Enter correct email address and password and click 'Login' button
+  await homePage.clickSignupLoginButton();
   await loginPage.login('giuzesouza@gmail.com', 'qwert12345');
-  // Verify that 'Logged in as username' is visible
-  await loginPage.verifyLoggedInVisible();
-  // Click 'Logout' button
-  await loginPage.clickLogoutButton();
+  await homePage.verifyUserLoggedIn();
+  await homePage.clickLogoutButton();
+  
+});
+
+test.skip('login with empty credentials', async ({ page }) => {
+
+  // Not automated.
+  // This scenario relies on native HTML5 browser validation does not provide a way to assert a validation message.
+  // Chrome displays a validation tooltip, while Firefox highlights the required field.
+  // Since the validation UI is browser-dependent and not part of the DOM,
+  // this scenario is intentionally excluded from automation.
+
+  const homePage = new HomePage(page);
+  const loginPage = new LoginPage(page);
+
+  await homePage.open();
+  await homePage.clickSignupLoginButton();
+  await loginPage.login('', '');
+  await expect(page.getByText('Please enter your email or password!')).toBeVisible();
+
 });
