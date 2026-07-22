@@ -17,6 +17,12 @@ export class HomePage {
         }
     }
 
+    // Click Products button
+    async clickProductsButton() {
+        await this.page.getByRole('link', { name: 'Products' }).click();
+        await expect(this.page.getByText('All Products')).toBeVisible();
+    }
+
     // Click Signup/Login
     async clickSignupLoginButton() {
         await this.page.getByRole('link', { name: 'Signup / Login' }).click();
