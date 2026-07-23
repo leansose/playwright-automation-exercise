@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
 import { ProductsPage } from '../pages/ProductsPage';
+import { CartPage } from '../pages/CartPage';
 
 test('view products', async ({ page }) => {
   
@@ -10,7 +11,7 @@ test('view products', async ({ page }) => {
     await homePage.open();
     await homePage.clickProductsButton();
     await productsPage.expectProductsVisible();
-    
+
 });
 
 test('view single product details', async ({ page }) => {
@@ -34,11 +35,11 @@ test('filter product by category', async ({ page }) => {
     await homePage.clickProductsButton();
     await productsPage.filterByCategory('Women', 'Dress');
     await productsPage.openFirstProduct();
-    await productsPage.checkCategory('Women');
+    await productsPage.verifyProductCategory('Women');
 
 });
 
-test.only('filter product by brand', async ({ page }) => {
+test('filter product by brand', async ({ page }) => {
   
     const homePage = new HomePage(page);
     const productsPage = new ProductsPage(page);
@@ -47,6 +48,22 @@ test.only('filter product by brand', async ({ page }) => {
     await homePage.clickProductsButton();
     await productsPage.filterByBrand('Polo');
     await productsPage.openFirstProduct();
-    await productsPage.checkBrand('Polo');
+    await productsPage.verifyProductBrand('Polo');
+
+});
+
+test('add product to cart', async ({ page }) => {
+
+    const homePage = new HomePage(page);
+    const productsPage = new ProductsPage(page);
+    const cartPage = new CartPage(page);
+
+    await homePage.open();
+    await homePage.clickProductsButton();
+    await productsPage.openFirstProduct();
+    await productsPage.addProductToCart();
+    await productsPage.clickContinueShopping();
+    await homePage.clickCartButton();
+    await cartPage.verifyCartHasProducts();
 
 });

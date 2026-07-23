@@ -3,7 +3,9 @@ import { expect, Page } from '@playwright/test';
 export class HomePage {
     constructor(private page: Page) {}
 
-    // Opens website and consent cookies
+    // NAVIGATION
+
+    // Opens HomePage and consent cookies
     async open() {
         await this.page.goto('/');
 
@@ -17,35 +19,39 @@ export class HomePage {
         }
     }
 
-    // Click Products button
     async clickProductsButton() {
         await this.page.getByRole('link', { name: 'Products' }).click();
         await expect(this.page.getByText('All Products')).toBeVisible();
     }
 
-    // Click Signup/Login
+    async clickCartButton() {
+        await this.page.getByRole('link', { name: 'Cart' }).click();
+        await expect(this.page.getByText('Shopping Cart')).toBeVisible();
+    }
+
     async clickSignupLoginButton() {
         await this.page.getByRole('link', { name: 'Signup / Login' }).click();
         await expect(this.page.getByText('Login to your account')).toBeVisible();
         await expect(this.page.getByText('New User Signup!')).toBeVisible();
     }
 
-    // Verify user 'Logged in'
-    async verifyUserLoggedIn() {
-        await expect(this.page.getByText('Logged in as')).toBeVisible();
-    }
-
-    // Click Logout
     async clickLogoutButton() {
         await this.page.getByRole('link', { name: 'Logout' }).click();
         await expect(this.page.getByText('Login to your account')).toBeVisible();
     }
 
-    // Delete account
+    // ACTIONS
+
     async deleteAccount() {
         await this.page.getByRole('link', { name: 'Delete Account' }).click();
         await expect(this.page.getByText('Account Deleted!')).toBeVisible();
         await this.page.locator('[data-qa="continue-button"]').click();
+    }
+
+    // ASSERTIONS
+
+    async verifyUserLoggedIn() {
+        await expect(this.page.getByText('Logged in as')).toBeVisible();
     }
 
 }

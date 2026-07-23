@@ -24,23 +24,22 @@ export class ProductsPage {
 
     }
 
+    // NAVIGATION
+
     // Open first product details page
     async openFirstProduct() {
         await this.page.getByRole('link', { name: 'View Product' }).first().click();
     }
 
-    // Verify product details are visible
-    async expectProductDetailsVisible() {
-
-        await expect(this.productName).toBeVisible(); // product name
-        await expect(this.productCategory).toBeVisible(); // category
-        await expect(this.productPrice).toContainText('Rs.'); // price
-        await expect(this.availability).toBeVisible(); // availability
-        await expect(this.condition).toBeVisible(); // condition
-        await expect(this.brand).toBeVisible(); // brand
+    // Goes to Cart through Added Product pop-up
+    async clickViewCart() {
+        await this.page.getByRole('link', { name: 'View Cart' }).click();
+        await expect(this.page.getByText('Shopping Cart')).toBeVisible();
+        await expect(this.page.getByText('Proceed To Checkout')).toBeVisible();
     }
 
-    // Filter product by category and subcategory
+    // ACTIONS
+
     async filterByCategory(category: string, subcategory: string) {
         await expect(this.page.locator('.left-sidebar').getByText('Category')).toBeVisible();
         await this.page.getByRole('link', { name: category }).click();
@@ -48,28 +47,48 @@ export class ProductsPage {
         await expect(this.page.getByText(`${category} - ${subcategory} Products`)).toBeVisible();
     }
 
-    // Verify product category
-    async checkCategory(category: string) {
-        await expect(this.productCategory).toContainText(`${category}`);
-    }
-
-     // Filter product by brand
     async filterByBrand(brand: string) {
         await expect(this.page.locator('.left-sidebar').getByText('Brand')).toBeVisible();
         await this.page.getByRole('link', { name: brand }).click();
         await expect(this.page.getByText(`Brand - ${brand} Products`)).toBeVisible();
     }
 
-    // Check product brand
-    async checkBrand(brand: string) {
+    // Add product to cart inside product details page
+    async addProductToCart(){
+        await this.page.getByRole('button', { name: 'Add to cart' }).click();
+        await expect(this.page.getByText('Your product has been added to cart.')).toBeVisible();
+    }
+
+    async addQuantityToProduct(quantity: number){
+        await this.page.locator('#quantity').fill(quantity.toString());
+    }
+
+    async clickContinueShopping(){
+        await this.page.getByRole('button', { name: 'Continue Shopping' }).click();
+    }
+
+    // ASSERTIONS
+
+    async expectProductDetailsVisible() {
+        await expect(this.productName).toBeVisible();
+        await expect(this.productCategory).toBeVisible();
+        await expect(this.productPrice).toContainText('Rs.');
+        await expect(this.availability).toBeVisible();
+        await expect(this.condition).toBeVisible();
+        await expect(this.brand).toBeVisible();
+    }
+
+     // Verify page has at least one product
+    async expectProductsVisible(){
+        await expect(this.products.first()).toBeVisible();
+    }
+
+    async verifyProductCategory(category: string) {
+        await expect(this.productCategory).toContainText(`${category}`);
+    }
+
+    async verifyProductBrand(brand: string) {
         await expect(this.brand).toContainText(`Brand: ${brand}`);
     }
 
-    // verify page has at least one product
-    async expectProductsVisible(){
-        await expect(this.products.first()).toBeVisible();
-
-    }
-
 }
-
