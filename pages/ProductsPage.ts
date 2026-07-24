@@ -2,7 +2,11 @@ import { expect, Page } from '@playwright/test';
 
 export class ProductsPage {
 
-    readonly products;
+    // products list in produts page
+    readonly productCards;
+    readonly productTitle;
+
+    // product details section
     readonly productInfo;
     readonly productName;
     readonly productCategory;
@@ -13,15 +17,18 @@ export class ProductsPage {
 
     constructor(private page: Page) {
 
-        this.products = page.locator('.product-image-wrapper'); // view products
+        // products list in produts page
+        this.productCards = page.locator('.product-image-wrapper'); // find product card
+        this.productTitle = this.productCards.locator('.productinfo.text-center p'); // product title
+        
+        // product details section
         this.productInfo = page.locator('.product-information'); // product details section
-        this.productName = this.productInfo.locator('h2'); // product name
-        this.productCategory = this.productInfo.getByText('Category:'); // product category
-        this.productPrice = this.productInfo.getByText('Rs.'); // product price
-        this.availability = this.productInfo.getByText('Availability:'); // product availability
-        this.condition = this.productInfo.getByText('Condition:'); // product condition
-        this.brand = this.productInfo.locator('p').filter({ hasText: 'Brand:' }); // product brand
-
+        this.productName = this.productInfo.locator('h2'); // product name 
+        this.productCategory = this.productInfo.getByText('Category:');
+        this.productPrice = this.productInfo.getByText('Rs.'); // product price 
+        this.availability = this.productInfo.getByText('Availability:');
+        this.condition = this.productInfo.getByText('Condition:');
+        this.brand = this.productInfo.locator('p').filter({ hasText: 'Brand:' });
     }
 
     // NAVIGATION
@@ -29,6 +36,10 @@ export class ProductsPage {
     // Open first product details page
     async openFirstProduct() {
         await this.page.getByRole('link', { name: 'View Product' }).first().click();
+    }
+
+    async clickViewProduct(index: number) {
+        await this.page.getByRole('link', { name: 'View Product' }).nth(index).click();
     }
 
     // Goes to Cart through Added Product pop-up
@@ -39,6 +50,12 @@ export class ProductsPage {
     }
 
     // ACTIONS
+
+    async searchProduct(keyword: string) {
+        await this.page.locator('[id="search_product"]').fill(keyword);
+        await this.page.locator('[id="submit_search"]').click();
+        await expect(this.page.getByText('Searched Products')).toBeVisible();
+    }
 
     async filterByCategory(category: string, subcategory: string) {
         await expect(this.page.locator('.left-sidebar').getByText('Category')).toBeVisible();
@@ -67,6 +84,14 @@ export class ProductsPage {
         await this.page.getByRole('button', { name: 'Continue Shopping' }).click();
     }
 
+    async submitProductReview(name: string, email: string, review: string) {
+        await this.page.getByRole('textbox', { name: 'Your Name' }).fill(name);
+        await this.page.getByRole('textbox', { name: 'Email Address', exact: true }).fill(email);
+        await this.page.getByRole('textbox', { name: 'Add Review Here!' }).fill(review);
+        await this.page.getByRole('button', { name: 'Submit' }).click();
+        await expect(this.page.getByText('Thank you for your review.')).toBeVisible();
+    }
+
     // ASSERTIONS
 
     async expectProductDetailsVisible() {
@@ -78,9 +103,45 @@ export class ProductsPage {
         await expect(this.brand).toBeVisible();
     }
 
+    async verifySearchedProducts(expectedKeyword: string) {
+
+        // verify product name contains searched keyword
+        // if yes, verify next product in search results
+        // if not, verify catergory in product details
+        // then, go back to produtct page with search results
+        // verify next product until no more products in the list
+
+        const keyword = expectedKeyword.toLowerCase();
+        const count = await this.productTitle.count();
+        const searchResultsUrl = this.page.url();
+
+        for (let i = 0; i < count; i++) {
+
+            const productName = await this.productTitle.nth(i).textContent();
+
+            if (productName?.toLowerCase().includes(keyword)) {
+                continue;
+            }
+
+            await this.page.getByRole('link', { name: 'View Product' }).nth(i).click();
+            const productCategory = await this.productCategory.textContent();
+            expect(productCategory?.toLowerCase()).toContain(keyword);
+
+            // Avoid waiting for external ads and third-party resources.
+            // The test only requires the search results DOM to be available.
+            await this.page.goto(searchResultsUrl, {
+                    waitUntil: 'domcontentloaded'
+                });
+                
+            await expect(this.productCards.first()).toBeVisible();
+        }
+
+    }
+
+
      // Verify page has at least one product
     async expectProductsVisible(){
-        await expect(this.products.first()).toBeVisible();
+        await expect(this.productCards.first()).toBeVisible();
     }
 
     async verifyProductCategory(category: string) {

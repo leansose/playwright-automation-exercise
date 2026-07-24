@@ -12,6 +12,8 @@ export class CartPage {
 
     constructor(private page: Page) {
 
+        // cart page elements
+
         this.itemImage = page.getByRole('link', { name: 'Product Image' });
         this.productDescription = page.locator('.cart_description');
         this.productPrice = page.locator('.cart_price');
@@ -35,7 +37,6 @@ export class CartPage {
         await expect(this.productPrice).toBeVisible();
         await expect(this.quantity).toBeVisible();
         await expect(this.totalPrice).toBeVisible();
-
     }
 
     async verifyQuantityInCart(expected_quantity: number) {

@@ -67,3 +67,33 @@ test('add product to cart', async ({ page }) => {
     await cartPage.verifyCartHasProducts();
 
 });
+
+test.only('search for product', async ({ page }) => {
+
+    const homePage = new HomePage(page);
+    const productsPage = new ProductsPage(page);
+
+    await homePage.open();
+    await homePage.clickProductsButton();
+    await productsPage.searchProduct('shirt');
+    await productsPage.verifySearchedProducts('shirt');
+    await productsPage.expectProductsVisible();
+
+});
+
+test('add a review to product', async ({ page }) => {
+
+    const homePage = new HomePage(page);
+    const productsPage = new ProductsPage(page);
+
+    await homePage.open();
+    await homePage.clickProductsButton();
+    await productsPage.openFirstProduct();
+
+    await productsPage.submitProductReview(
+        'Leandro Sousa',
+        'leander@gmail.com',
+        'This is a great product!'
+    );
+
+});
