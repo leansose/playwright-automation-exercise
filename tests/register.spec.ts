@@ -1,39 +1,46 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
 import { RegisterPage } from '../pages/RegisterPage';
+import { generateRandomUser } from '../helpers/dataGenerator';
 
 
-test('register new user', async ({ page }) => {
+test.only('register new user', async ({ page }) => {
 
     const homePage = new HomePage(page);
     const registerPage = new RegisterPage(page);
+    const randomUser = generateRandomUser();
 
     await homePage.open();
 
     await homePage.clickSignupLoginButton();
 
-    await registerPage.fillSignUpForm('Dummy User', 'fetapep260@rapplo.com');
+    await registerPage.fillSignUpForm(randomUser.user.name, randomUser.user.email);
 
     await expect(page.getByText('Enter Account Information')).toBeVisible();
 
-    await registerPage.fillAccountInformation('qwert12345', '1', 'January', '2000');
+    await registerPage.fillAccountInformation(
+        randomUser.account.password,
+        randomUser.account.day,
+        randomUser.account.month,
+        randomUser.account.year
+    );
 
     await expect(page.getByText('Address Information')).toBeVisible();
 
-    await registerPage.fillAddressInformation(
-        'Dummy',
-        'User',
-        'Dummy Company',
-        '123 Main St',
-        'Apt 4B',
-        'United States',
-        'California',
-        'Los Angeles',
-        '90001',
-        '+1234567890'
-    );
-
     await registerPage.fillCheckboxOptions();
+
+    await registerPage.fillAddressInformation(
+        randomUser.address.firstName,
+        randomUser.address.lastName,
+        randomUser.address.company,
+        randomUser.address.address,
+        randomUser.address.address2,
+        randomUser.address.country,
+        randomUser.address.state,
+        randomUser.address.city,
+        randomUser.address.zipcode,
+        randomUser.address.mobileNumber
+    );
 
     await registerPage.createAccount();
    

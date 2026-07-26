@@ -5,20 +5,23 @@ This project demonstrates UI automation using Playwright and TypeScript.
 Website:
 https://automationexercise.com/
 
-🎯 Current Test Coverage
+🎯 Current Coverage
 
 	- Project setup and configuration
 	- Framework structure and test organization
-	- Automate login
-	- Automate registration
+	- Automate Login
+	- Automate Registration
+	- Automate Cart
+	- Automate Search Products
+	- Page Object Model
+	- Dynamic Test Data using Faker library for Registration
+	- Remove Hardcoded Test Data
 
 💡 In Progress
 
-	- Automate Cart
 	- Automate Checkout
-	- Automate Search Products
-	- Framework improvements, Page Object Model
-	- Dynamic Test Data
+	- Framework improvements on POM
+	- Create Fixtures folder for test data
 
 ⚙️ Test Environment
 
@@ -27,3 +30,4 @@ https://automationexercise.com/
 	Test Management: Jira, for workflow and tracking
 	Reporting: Allure, for detailed test reports and insights (future integration)
 	CI/CD: GitHub Actions
+	IDE: VSCode

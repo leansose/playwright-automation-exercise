@@ -2,6 +2,9 @@ import { test, expect } from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
 import { LoginPage } from '../pages/LoginPage';
 
+import { validUser } from '../test-data/user';
+import { invalidUser } from '../test-data/user';
+
 test('login with valid credentials', async ({ page }) => {
   
   const homePage = new HomePage(page);
@@ -9,7 +12,7 @@ test('login with valid credentials', async ({ page }) => {
 
   await homePage.open();
   await homePage.clickSignupLoginButton();
-  await loginPage.login('giuzesouza@gmail.com', 'qwert12345');
+  await loginPage.login('validUser.email', 'validUser.password');
   await homePage.verifyUserLoggedIn();
 
 });
@@ -21,7 +24,7 @@ test('login with invalid credentials', async ({ page }) => {
 
   await homePage.open();
   await homePage.clickSignupLoginButton();
-  await loginPage.login('invalid@gmail.com', 'invalid123');
+  await loginPage.login('invalidUser.email', 'invalidUser.password');
   await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
 
 });
@@ -33,7 +36,7 @@ test('login with valid email and invalid password', async ({ page }) => {
 
   await homePage.open();
   await homePage.clickSignupLoginButton();
-  await loginPage.login('giuzesouza@gmail.com', 'invalid123');
+  await loginPage.login('validUser.email', 'invalidUser.password');
   await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
 
 });
@@ -45,7 +48,7 @@ test('login with invalid email and valid password', async ({ page }) => {
 
   await homePage.open();
   await homePage.clickSignupLoginButton();
-  await loginPage.login('invalid@gmail.com', 'qwert12345');
+  await loginPage.login('invalid@gmail.com', 'validUser.password');
   await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
 
 });
@@ -57,7 +60,7 @@ test('logout user', async ({ page }) => {
 
   await homePage.open();
   await homePage.clickSignupLoginButton();
-  await loginPage.login('giuzesouza@gmail.com', 'qwert12345');
+  await loginPage.login('validUser.email', 'validUser.password');
   await homePage.verifyUserLoggedIn();
   await homePage.clickLogoutButton();
   
