@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
 import { RegisterPage } from '../pages/RegisterPage';
+
+//test-data
+import { validUser } from '../test-data/user';
 import { generateRandomUser } from '../helpers/dataGenerator';
 
 
@@ -59,7 +62,7 @@ test('register an existing email', async ({ page }) => {
 
     await homePage.clickSignupLoginButton();
 
-    await registerPage.fillSignUpForm('Dummy User', 'giuzesouza@gmail.com');
+    await registerPage.fillSignUpForm(validUser.name, validUser.email);
 
     await expect(page.getByText('Email Address already exist!')).toBeVisible();
 

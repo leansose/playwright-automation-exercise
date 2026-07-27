@@ -12,7 +12,7 @@ test('login with valid credentials', async ({ page }) => {
 
   await homePage.open();
   await homePage.clickSignupLoginButton();
-  await loginPage.login('validUser.email', 'validUser.password');
+  await loginPage.login(validUser.email,validUser.password);
   await homePage.verifyUserLoggedIn();
 
 });
@@ -24,7 +24,7 @@ test('login with invalid credentials', async ({ page }) => {
 
   await homePage.open();
   await homePage.clickSignupLoginButton();
-  await loginPage.login('invalidUser.email', 'invalidUser.password');
+  await loginPage.login(invalidUser.email, invalidUser.password);
   await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
 
 });
@@ -36,7 +36,7 @@ test('login with valid email and invalid password', async ({ page }) => {
 
   await homePage.open();
   await homePage.clickSignupLoginButton();
-  await loginPage.login('validUser.email', 'invalidUser.password');
+  await loginPage.login(validUser.email, invalidUser.password);
   await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
 
 });
@@ -48,7 +48,7 @@ test('login with invalid email and valid password', async ({ page }) => {
 
   await homePage.open();
   await homePage.clickSignupLoginButton();
-  await loginPage.login('invalid@gmail.com', 'validUser.password');
+  await loginPage.login(invalidUser.email, validUser.password);
   await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
 
 });
@@ -60,7 +60,7 @@ test('logout user', async ({ page }) => {
 
   await homePage.open();
   await homePage.clickSignupLoginButton();
-  await loginPage.login('validUser.email', 'validUser.password');
+  await loginPage.login(validUser.email, validUser.password);
   await homePage.verifyUserLoggedIn();
   await homePage.clickLogoutButton();
   

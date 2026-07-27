@@ -20,7 +20,8 @@ export class ProductsPage {
         // products list in produts page
         this.productCards = page.locator('.product-image-wrapper'); // find product card
         this.productTitle = this.productCards.locator('.productinfo.text-center p'); // product title
-        
+
+
         // product details section
         this.productInfo = page.locator('.product-information'); // product details section
         this.productName = this.productInfo.locator('h2'); // product name 
@@ -74,6 +75,20 @@ export class ProductsPage {
     async addProductToCart(){
         await this.page.getByRole('button', { name: 'Add to cart' }).click();
         await expect(this.page.getByText('Your product has been added to cart.')).toBeVisible();
+    }
+
+    // Add any product to cart in products page
+    
+    async addProductFromList(productId: number) {
+
+        // Filter the product cards and keep only the one that contains
+        // the "Add to Cart" button with the requested product ID.
+        const productCard = this.productCards.filter({
+            has: this.page.locator(`.add-to-cart[data-product-id="${productId}"]`)});
+
+        await productCard.locator('.productinfo .add-to-cart').click();
+        await expect(this.page.getByText('Your product has been added to cart.')).toBeVisible();
+
     }
 
     async addQuantityToProduct(quantity: number){
@@ -132,7 +147,7 @@ export class ProductsPage {
             await this.page.goto(searchResultsUrl, {
                     waitUntil: 'domcontentloaded'
                 });
-                
+
             await expect(this.productCards.first()).toBeVisible();
         }
 

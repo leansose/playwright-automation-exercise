@@ -1,5 +1,9 @@
 export const review = {
-    name: 'Leandro Sousa',
-    email: 'leander@gmail.com',
+    name: 'José Sousa',
+    email: 'giuzesouza@gmail.com',
     message: 'This product is amazing!'
+};
+
+export const myComment = {
+    message: 'Pls, send a text message to confirm the order.'
 };

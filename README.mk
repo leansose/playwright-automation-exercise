@@ -21,13 +21,12 @@ https://automationexercise.com/
 
 	- Automate Checkout
 	- Framework improvements on POM
-	- Create Fixtures folder for test data
+	- Create Fixtures
 
 ⚙️ Test Environment
 
     Browser: Chromium, future support for Firefox and Webkit
     OS Compatibility: Windows
 	Test Management: Jira, for workflow and tracking
-	Reporting: Allure, for detailed test reports and insights (future integration)
 	CI/CD: GitHub Actions
 	IDE: VSCode

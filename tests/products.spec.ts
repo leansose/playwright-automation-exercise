@@ -73,6 +73,22 @@ test('add product to cart', async ({ page }) => {
 
 });
 
+test.only('add multiple products to cart', async ({ page }) => {
+
+    const homePage = new HomePage(page);
+    const productsPage = new ProductsPage(page);
+    const cartPage = new CartPage(page);
+
+    await homePage.open();
+    await homePage.clickProductsButton();
+    await productsPage.addProductFromList(1);
+    await productsPage.clickContinueShopping();
+    await productsPage.addProductFromList(3);
+    await productsPage.clickViewCart();
+    await cartPage.verifyCartHasProducts();
+
+});
+
 test('search for product', async ({ page }) => {
 
     const homePage = new HomePage(page);
@@ -86,7 +102,7 @@ test('search for product', async ({ page }) => {
 
 });
 
-test.only('add a review to product', async ({ page }) => {
+test('add a review to product', async ({ page }) => {
 
     const homePage = new HomePage(page);
     const productsPage = new ProductsPage(page);
