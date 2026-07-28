@@ -21,3 +21,11 @@ export const userAddress = {
     zipcode: '90001',
     mobileNumber: '05611245258'
 };
+
+export const userCreditCard = {
+    cardName: 'John Doe',
+    cardNumber: '1234567890123456',
+    cvv: '123',
+    month: '12',
+    year: '2025'
+};
