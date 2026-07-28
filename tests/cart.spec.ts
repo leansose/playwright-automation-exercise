@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
-import { LoginPage } from '../pages/LoginPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { CartPage } from '../pages/CartPage';
 

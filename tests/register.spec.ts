@@ -7,7 +7,7 @@ import { validUser } from '../test-data/user';
 import { generateRandomUser } from '../helpers/dataGenerator';
 
 
-test.only('register new user', async ({ page }) => {
+test('register new user', async ({ page }) => {
 
     const homePage = new HomePage(page);
     const registerPage = new RegisterPage(page);

@@ -73,7 +73,7 @@ test('add product to cart', async ({ page }) => {
 
 });
 
-test.only('add multiple products to cart', async ({ page }) => {
+test('add multiple products to cart', async ({ page }) => {
 
     const homePage = new HomePage(page);
     const productsPage = new ProductsPage(page);

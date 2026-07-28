@@ -11,7 +11,7 @@ import { userAddress } from '../test-data/user';
 import { myComment } from '../test-data/review';
 
 
-test.only('place order with comment of one item', async ({ page, authenticatedUser  }) => {
+test('place order with comment of one item', async ({ page, authenticatedUser  }) => {
 
     const homePage = new HomePage(page);
     const productsPage = new ProductsPage(page);

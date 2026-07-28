@@ -9,7 +9,7 @@ import { PaymentPage } from '../pages/PaymentPage';
 
 import { userCreditCard } from '../test-data/user';
 
-test.only('successfully payment', async ({ page, authenticatedUser  }) => {
+test('successfully payment', async ({ page, authenticatedUser  }) => {
 
     const homePage = new HomePage(page);
     const productsPage = new ProductsPage(page);
