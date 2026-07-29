@@ -3,7 +3,6 @@ import { expect, Page } from '@playwright/test';
 export class RegisterPage {
     constructor(private page: Page) {}
 
-    // Fill the SignUp form
     async fillSignUpForm(name: string, email: string) {
         await this.page.locator('[data-qa="signup-name"]').fill(name);
         await this.page.locator('[data-qa="signup-email"]').fill(email);
@@ -11,7 +10,6 @@ export class RegisterPage {
 
     }
 
-    // Fill Account Information details
     async fillAccountInformation(password: string, day: string, month: string, year: string) {
 
         await this.page.getByRole('radio', { name: 'Mr.' }).check();
@@ -22,15 +20,12 @@ export class RegisterPage {
 
     }
 
-    // Select checkboxes
     async fillCheckboxOptions() {
 
         await this.page.locator('[name="newsletter"]').check();
         await this.page.locator('[name="optin"]').check();
     }
 
-    
-    // Fill Address Information details
     async fillAddressInformation(
         firstName: string, 
         lastName: string, 
@@ -56,7 +51,6 @@ export class RegisterPage {
         await this.page.locator('[data-qa="mobile_number"]').fill(mobileNumber);
     }
 
-    // Create Account button
     async createAccount() {
         await this.page.locator('[data-qa="create-account"]').click();
         await expect(this.page.getByText('Account Created!')).toBeVisible();

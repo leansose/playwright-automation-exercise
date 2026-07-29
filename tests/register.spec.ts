@@ -14,11 +14,9 @@ test('register new user', async ({ page }) => {
     const randomUser = generateRandomUser();
 
     await homePage.open();
-
-    await homePage.clickSignupLoginButton();
-
+    await homePage.acceptCookies();
+    await homePage.openSignupLoginPage();
     await registerPage.fillSignUpForm(randomUser.user.name, randomUser.user.email);
-
     await expect(page.getByText('Enter Account Information')).toBeVisible();
 
     await registerPage.fillAccountInformation(
@@ -29,7 +27,6 @@ test('register new user', async ({ page }) => {
     );
 
     await expect(page.getByText('Address Information')).toBeVisible();
-
     await registerPage.fillCheckboxOptions();
 
     await registerPage.fillAddressInformation(
@@ -46,9 +43,7 @@ test('register new user', async ({ page }) => {
     );
 
     await registerPage.createAccount();
-   
     await homePage.verifyUserLoggedIn();
-
     await homePage.deleteAccount();
 
 });
@@ -59,11 +54,9 @@ test('register an existing email', async ({ page }) => {
     const registerPage = new RegisterPage(page);
 
     await homePage.open();
-
-    await homePage.clickSignupLoginButton();
-
+    await homePage.acceptCookies();
+    await homePage.openSignupLoginPage();
     await registerPage.fillSignUpForm(validUser.name, validUser.email);
-
     await expect(page.getByText('Email Address already exist!')).toBeVisible();
 
 });

@@ -7,10 +7,12 @@ export class HomePage {
 
     // Opens HomePage and consent cookies
     async open() {
-        await this.page.goto('/');
 
-        await expect(this.page.getByAltText('Website for automation practice'))
-            .toBeVisible();
+        await this.page.goto('/');
+        await expect(this.page.getByAltText('Website for automation practice')).toBeVisible();
+    }
+
+    async acceptCookies() {
 
         const consent = this.page.getByRole('button', { name: /Consent/i });
         
@@ -19,26 +21,22 @@ export class HomePage {
         }
     }
 
-    async clickProductsButton() {
+    async openProductsPage() {
         await this.page.getByRole('link', { name: 'Products' }).click();
         await expect(this.page.getByText('All Products')).toBeVisible();
     }
 
-    async clickCartButton() {
+    async openCartPage() {
         await this.page.getByRole('link', { name: 'Cart' }).click();
         await expect(this.page.getByText('Shopping Cart')).toBeVisible();
     }
 
-    async clickSignupLoginButton() {
+    async openSignupLoginPage() {
         await this.page.getByRole('link', { name: 'Signup / Login' }).click();
         await expect(this.page.getByText('Login to your account')).toBeVisible();
         await expect(this.page.getByText('New User Signup!')).toBeVisible();
     }
 
-    async clickLogoutButton() {
-        await this.page.getByRole('link', { name: 'Logout' }).click();
-        await expect(this.page.getByText('Login to your account')).toBeVisible();
-    }
 
     // ACTIONS
 
@@ -46,6 +44,11 @@ export class HomePage {
         await this.page.getByRole('link', { name: 'Delete Account' }).click();
         await expect(this.page.getByText('Account Deleted!')).toBeVisible();
         await this.page.locator('[data-qa="continue-button"]').click();
+    }
+
+     async logout() {
+        await this.page.getByRole('link', { name: 'Logout' }).click();
+        await expect(this.page.getByText('Login to your account')).toBeVisible();
     }
 
     // ASSERTIONS

@@ -7,8 +7,8 @@ export function generateRandomUser() {
     const fullName = `${firstName} ${lastName}`;
 
     const emailName = fullName
-        .toLowerCase().
-        replace(/\s+/g, '.');
+        .toLowerCase()
+        .replace(/\s+/g, '.'); // replace spaces with dots
     const email = `${emailName}@${faker.internet.domainName()}`;
 
     return {

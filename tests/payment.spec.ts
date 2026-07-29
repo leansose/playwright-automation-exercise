@@ -9,7 +9,7 @@ import { PaymentPage } from '../pages/PaymentPage';
 
 import { userCreditCard } from '../test-data/user';
 
-test('successfully payment', async ({ page, authenticatedUser  }) => {
+test('verify order placed, successfully payment and download invoice', async ({ page, authenticatedUser  }) => {
 
     const homePage = new HomePage(page);
     const productsPage = new ProductsPage(page);
@@ -17,9 +17,9 @@ test('successfully payment', async ({ page, authenticatedUser  }) => {
     const checkoutPage = new CheckoutPage(page);
     const paymentPage = new PaymentPage(page);
 
-    await homePage.clickProductsButton();
+    await homePage.openProductsPage();
     await productsPage.openFirstProduct();
-    await productsPage.addProductToCart();
+    await productsPage.addToCartFromDetailsPage();
     await productsPage.clickViewCart();
     await cartPage.proceedToCheckout();
     await checkoutPage.placeOrder();

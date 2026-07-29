@@ -11,21 +11,21 @@ import { userAddress } from '../test-data/user';
 import { myComment } from '../test-data/review';
 
 
-test('place order with comment of one item', async ({ page, authenticatedUser  }) => {
+test('place order with comment', async ({ page, authenticatedUser  }) => {
 
     const homePage = new HomePage(page);
     const productsPage = new ProductsPage(page);
     const cartPage = new CartPage(page);
     const checkoutPage = new CheckoutPage(page);
 
-    await homePage.clickProductsButton();
+    await homePage.openProductsPage();
     await productsPage.openFirstProduct();
-    await productsPage.addProductToCart();
+    await productsPage.addToCartFromDetailsPage();
     await productsPage.clickViewCart();
     await cartPage.verifyCartHasProducts();
     await cartPage.proceedToCheckout();
     await checkoutPage.verifyTotalAmount();
-    await checkoutPage.commentYourOrder(myComment.message);
+    await checkoutPage.addCommentToOrder(myComment.message);
     await checkoutPage.placeOrder();
 
 });
@@ -38,10 +38,10 @@ test('place order with multiple items and verify total price', async ({ page, au
     const checkoutPage = new CheckoutPage(page);
 
 
-    await homePage.clickProductsButton();
-    await productsPage.addProductFromList(1);
+    await homePage.openProductsPage();
+    await productsPage.addToCartFromList(1);
     await productsPage.clickContinueShopping();
-    await productsPage.addProductFromList(3);
+    await productsPage.addToCartFromList(3);
     await productsPage.clickViewCart();
     await cartPage.verifyCartHasProducts();
     await cartPage.proceedToCheckout();
@@ -60,9 +60,10 @@ test('place order while registering new user', async ({ page}) => {
     const randomUser = generateRandomUser();
 
     await homePage.open();
-    await homePage.clickProductsButton();
+    await homePage.acceptCookies();
+    await homePage.openProductsPage();
     await productsPage.openFirstProduct();
-    await productsPage.addProductToCart();
+    await productsPage.addToCartFromDetailsPage();
     await productsPage.clickViewCart();
     await cartPage.verifyCartHasProducts();
     await cartPage.proceedToCheckoutByLoginRegister();
@@ -92,7 +93,7 @@ test('place order while registering new user', async ({ page}) => {
 
     await registerPage.createAccount();
     await homePage.verifyUserLoggedIn();
-    await homePage.clickCartButton();
+    await homePage.openCartPage();
     await cartPage.verifyCartHasProducts();
     await cartPage.proceedToCheckout();
     await checkoutPage.verifyTotalAmount();
@@ -109,9 +110,9 @@ test('verify address details in order after login', async ({ page, authenticated
     const productsPage = new ProductsPage(page);
     const cartPage = new CartPage(page);
    
-    await homePage.clickProductsButton();
+    await homePage.openProductsPage();
     await productsPage.openFirstProduct();
-    await productsPage.addProductToCart();
+    await productsPage.addToCartFromDetailsPage();
     await productsPage.clickViewCart();
     await cartPage.verifyCartHasProducts();
     await cartPage.proceedToCheckout();
@@ -128,9 +129,9 @@ test('verify address details in order after registering', async ({ page, registe
     const productsPage = new ProductsPage(page);
     const cartPage = new CartPage(page);
 
-    await homePage.clickProductsButton();
+    await homePage.openProductsPage();
     await productsPage.openFirstProduct();
-    await productsPage.addProductToCart();
+    await productsPage.addToCartFromDetailsPage();
     await productsPage.clickViewCart();
     await cartPage.verifyCartHasProducts();
     await cartPage.proceedToCheckout();

@@ -14,7 +14,7 @@ https://automationexercise.com/
 
 ## Statistics
 
-- ✅ 24 Automated Test Scenarios
+- ✅ 26 Automated Test Scenarios
 - 📄 7 Page Objects
 - 🔄 Reusable Fixtures
 - 🎲 Dynamic Test Data with Faker
@@ -40,7 +40,6 @@ https://automationexercise.com/
 - Helper Functions
 - Reusable Locators
 - End-to-End UI Automation
-- TypeScript
 
 ---
 
@@ -59,14 +58,16 @@ https://automationexercise.com/
 - Product Details
 - Search Products
 - Product Reviews
-- Add Products to Cart
-- Add Multiple Products to Cart
 
 ### Cart
 
+- Add Product to Cart
+- Add Multiple Products to Cart
 - Verify Products in Cart
-- Remove Products
 - Validate Product Quantity
+- Verify Total Price of Item
+- Remove Products
+- Verify Cart is Empty
 
 ### Checkout
 
@@ -125,23 +126,6 @@ Current focus includes:
 - Separation of test data
 - Readable and scalable tests
 - End-to-End testing
-
----
-
-## Current Improvements
-
-Implemented:
-
-- Page Object Model
-- Dynamic Test Data with Faker
-- Externalized Test Data
-- Fixtures
-- Modular framework structure
-- Checkout validation
-- Payment workflow
-- Invoice download
-- Address verification
-- Total amount calculation
 
 ---
 

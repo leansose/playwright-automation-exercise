@@ -11,7 +11,8 @@ test('login with valid credentials', async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await homePage.open();
-  await homePage.clickSignupLoginButton();
+  await homePage.acceptCookies();
+  await homePage.openSignupLoginPage();
   await loginPage.login(validUser.email,validUser.password);
   await homePage.verifyUserLoggedIn();
 
@@ -23,7 +24,8 @@ test('login with invalid credentials', async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await homePage.open();
-  await homePage.clickSignupLoginButton();
+  await homePage.acceptCookies();
+  await homePage.openSignupLoginPage();
   await loginPage.login(invalidUser.email, invalidUser.password);
   await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
 
@@ -35,7 +37,8 @@ test('login with valid email and invalid password', async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await homePage.open();
-  await homePage.clickSignupLoginButton();
+  await homePage.acceptCookies();
+  await homePage.openSignupLoginPage();
   await loginPage.login(validUser.email, invalidUser.password);
   await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
 
@@ -47,7 +50,8 @@ test('login with invalid email and valid password', async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await homePage.open();
-  await homePage.clickSignupLoginButton();
+  await homePage.acceptCookies();
+  await homePage.openSignupLoginPage();
   await loginPage.login(invalidUser.email, validUser.password);
   await expect(page.getByText('Your email or password is incorrect!')).toBeVisible();
 
@@ -59,10 +63,11 @@ test('logout user', async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await homePage.open();
-  await homePage.clickSignupLoginButton();
+  await homePage.acceptCookies();
+  await homePage.openSignupLoginPage();
   await loginPage.login(validUser.email, validUser.password);
   await homePage.verifyUserLoggedIn();
-  await homePage.clickLogoutButton();
+  await homePage.logout();
   
 });
 
@@ -78,7 +83,8 @@ test.skip('login with empty credentials', async ({ page }) => {
   const loginPage = new LoginPage(page);
 
   await homePage.open();
-  await homePage.clickSignupLoginButton();
+  await homePage.acceptCookies();
+  await homePage.openSignupLoginPage();
   await loginPage.login('', '');
   await expect(page.getByText('Please enter your email or password!')).toBeVisible();
 

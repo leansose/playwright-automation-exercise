@@ -10,6 +10,7 @@ import { validUser } from '../test-data/user';
 type AuthFixture = {
     authenticatedUser: void;
     registeredUser: ReturnType<typeof generateRandomUser>;
+    productsPageReady: void;
 };
 
 export const test = base.extend<AuthFixture>({
@@ -20,7 +21,8 @@ export const test = base.extend<AuthFixture>({
         const loginPage = new LoginPage(page);
 
         await homePage.open();
-        await homePage.clickSignupLoginButton();
+        await homePage.acceptCookies();
+        await homePage.openSignupLoginPage();
 
         await loginPage.login(
             validUser.email,
@@ -40,7 +42,8 @@ export const test = base.extend<AuthFixture>({
         const randomUser = generateRandomUser();
 
         await homePage.open();
-        await homePage.clickSignupLoginButton();
+        await homePage.acceptCookies();
+        await homePage.openSignupLoginPage();
         
         await registerPage.fillSignUpForm(randomUser.user.name, randomUser.user.email);
         await registerPage.fillAccountInformation(
@@ -69,6 +72,18 @@ export const test = base.extend<AuthFixture>({
         await homePage.verifyUserLoggedIn();
 
         await use(randomUser);
+
+    },
+
+    productsPageReady: async ({ page }, use) => {
+
+        const homePage = new HomePage(page);
+
+        await homePage.open();
+        await homePage.acceptCookies();
+        await homePage.openProductsPage();
+
+        await use();
 
     }
 

@@ -39,8 +39,15 @@ export class ProductsPage {
         await this.page.getByRole('link', { name: 'View Product' }).first().click();
     }
 
-    async clickViewProduct(index: number) {
-        await this.page.getByRole('link', { name: 'View Product' }).nth(index).click();
+    async openProductDetails(productId: number) {
+
+        // Filter the product cards and keep only the one that contains
+        // the "View Product" button with the requested product ID.
+        const productCard = this.productCards.filter({
+            has: this.page.locator(`a[href="/product_details/${productId}"]`)
+        });
+
+            await productCard.getByRole('link', { name: 'View Product' }).click();
     }
 
     // Goes to Cart through Added Product pop-up
@@ -48,6 +55,10 @@ export class ProductsPage {
         await this.page.getByRole('link', { name: 'View Cart' }).click();
         await expect(this.page.getByText('Shopping Cart')).toBeVisible();
         await expect(this.page.getByText('Proceed To Checkout')).toBeVisible();
+    }
+
+    async clickContinueShopping(){
+        await this.page.getByRole('button', { name: 'Continue Shopping' }).click();
     }
 
     // ACTIONS
@@ -72,14 +83,13 @@ export class ProductsPage {
     }
 
     // Add product to cart inside product details page
-    async addProductToCart(){
+    async addToCartFromDetailsPage(){
         await this.page.getByRole('button', { name: 'Add to cart' }).click();
         await expect(this.page.getByText('Your product has been added to cart.')).toBeVisible();
     }
 
-    // Add any product to cart in products page
-    
-    async addProductFromList(productId: number) {
+    // Add any product to cart from list of products in product page
+    async addToCartFromList(productId: number) {
 
         // Filter the product cards and keep only the one that contains
         // the "Add to Cart" button with the requested product ID.
@@ -91,12 +101,8 @@ export class ProductsPage {
 
     }
 
-    async addQuantityToProduct(quantity: number){
+    async addQuantity(quantity: number){
         await this.page.locator('#quantity').fill(quantity.toString());
-    }
-
-    async clickContinueShopping(){
-        await this.page.getByRole('button', { name: 'Continue Shopping' }).click();
     }
 
     async submitProductReview(name: string, email: string, review: string) {

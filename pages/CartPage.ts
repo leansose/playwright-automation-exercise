@@ -3,10 +3,10 @@ import { expect, Page } from '@playwright/test';
 export class CartPage {
 
     readonly itemImage;
-    readonly productDescription;
-    readonly productPrice;
-    readonly quantity;
-    readonly totalPrice;
+    readonly itemDescription;
+    readonly itemPrice;
+    readonly itemQuantity;
+    readonly itemTotalPrice;
     readonly deleteButton;
     readonly cartTable;
     
@@ -16,10 +16,10 @@ export class CartPage {
         // cart page elements
 
         this.itemImage = page.getByRole('link', { name: 'Product Image' });
-        this.productDescription = page.locator('.cart_description');
-        this.productPrice = page.locator('.cart_price');
-        this.quantity = page.locator('.cart_quantity');
-        this.totalPrice = page.locator('.cart_total_price'); // price of item in cart
+        this.itemDescription = page.locator('.cart_description');
+        this.itemPrice = page.locator('.cart_price');
+        this.itemQuantity = page.locator('.cart_quantity');
+        this.itemTotalPrice = page.locator('.cart_total_price');
         this.deleteButton = page.locator('.cart_quantity_delete');
         this.cartTable = page.locator('.cart_menu');
         
@@ -42,7 +42,7 @@ export class CartPage {
     // ACTIONS
 
     // Remove a product from the cart based on its position in the cart table.
-    async removeItemFromCart(itemIndex: number) {
+    async removeItem(itemIndex: number) {
         await this.deleteButton.nth(itemIndex).click();
     }
 
@@ -53,9 +53,26 @@ export class CartPage {
         await expect(this.cartTable).toBeVisible();
     }
 
-    async verifyQuantityInCart(expectedQuantity: number) {
-        await expect(this.quantity).toHaveText(expectedQuantity.toString());
+    async verifyItemQuantity(itemIndex: number, expectedQuantity: number) {
+        await expect(this.itemQuantity.nth(itemIndex)).toHaveText(expectedQuantity.toString());
+
     }
+
+    async verifyItemTotalPrice(itemIndex: number) {
+        
+        const priceText = await this.itemPrice.nth(itemIndex).textContent();
+        const quantityText = await this.itemQuantity.nth(itemIndex).textContent();
+        const totalPriceText = await this.itemTotalPrice.nth(itemIndex).textContent();
+
+        const itemPrice = Number(priceText?.replace(/\D/g, ''));
+        const itemQuantity = Number(quantityText?.replace(/\D/g, ''));
+        const totalPrice = Number(totalPriceText?.replace(/\D/g, ''));
+
+        const expectedTotal = itemPrice * itemQuantity;
+
+        expect(totalPrice).toBe(expectedTotal);
+    }
+
 
     async verifyCartIsEmpty() {
         await expect(this.page.getByText('Cart is Empty!')).toBeVisible();

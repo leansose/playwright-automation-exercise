@@ -33,7 +33,7 @@ export class CheckoutPage {
 
     // ACTIONS
 
-    async commentYourOrder(message: string) {
+    async addCommentToOrder(message: string) {
 
        await expect(this.page.locator('#ordermsg')).toBeVisible();
        await this.page.locator('textarea[name="message"]').fill('message');
